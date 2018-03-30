@@ -36,7 +36,7 @@ xcuserdata/
 #
 # Pods/
 
-./*.podspec
+*.podspec
 
 
 # Carthage
