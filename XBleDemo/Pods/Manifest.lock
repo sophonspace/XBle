@@ -1,0 +1,15 @@
+PODS:
+  - iOSDFULibrary (4.1.2):
+    - Zip (~> 1.0)
+  - Zip (1.1.0)
+
+DEPENDENCIES:
+  - iOSDFULibrary
+
+SPEC CHECKSUMS:
+  iOSDFULibrary: 5a3c53b9c8e7a1303ec962c8e7bb4f30b1fd47b1
+  Zip: 8877eede3dda76bcac281225c20e71c25270774c
+
+PODFILE CHECKSUM: eec6442fe6763f2d23840f8b8eb817f40f64e34e
+
+COCOAPODS: 1.4.0
