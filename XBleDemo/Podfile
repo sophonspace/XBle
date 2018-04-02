@@ -4,7 +4,7 @@ use_frameworks!
 
 target 'XBleDemo’ do
 
-  pod 'XBle'
+  pod 'iOSDFULibrary'
 
 end
 
