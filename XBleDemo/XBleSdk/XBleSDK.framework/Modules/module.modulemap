@@ -1,0 +1,6 @@
+framework module XBleSDK {
+  umbrella header "XBleSDK.h"
+
+  export *
+  module * { export * }
+}
