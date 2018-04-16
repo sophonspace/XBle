@@ -20,4 +20,4 @@ FOUNDATION_EXPORT const unsigned char XBleSDKVersionString[];
 #import <XBleSDK/XBLELockUtils.h>
 #import <XBleSDK/XBLEDevice.h>
 #import <XBleSDK/XBLERecord.h>
-#import "XBLEFirmware.h"
+#import <XBleSDK/XBLEFirmware.h>

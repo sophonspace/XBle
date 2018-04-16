@@ -112,6 +112,16 @@
 
 
 /**
+ 获取临时密
+
+ @param type 设备类型
+ @param result 命令执行结果
+ @param mac 设备Mac地址
+ */
++ (void)getTempPassword:(int)type result:(void(^)(XBCmdResultCode code, NSString *password))result mac:(NSString *)mac;
+
+
+/**
  获取操作记录
  
  @param result 执行结果回调
@@ -140,6 +150,25 @@
 
 
 /**
+ 添加IC卡
+ 
+ @param result 执行结果回调
+ @param mac 设备Mac地址
+ */
++ (void)addIcCard:(void(^)(int code, uint number))result mac:(NSString *)mac;
+
+
+/**
+ 删除IC卡
+ 
+ @param number IC卡序号
+ @param result 执行结果回调
+ @param mac 设备Mac地址
+ */
++ (void)delIcCard:(uint)number result:(void(^)(int code))result mac:(NSString *)mac;
+
+
+/**
  同步指纹
  
  @param idList 有效指纹列表
@@ -158,14 +187,14 @@
 + (void)resetFactory:(void(^)(XBCmdResultCode code))result mac:(NSString *)mac;
 
 
-
-#pragma mark 开始固件升级
 /**
  开始固件升级
 
  @param mac 设备Mac地址
  */
 + (void)upgrade:(NSString *)mac result:(void(^)(BOOL success, NSInteger progress))result;
+
+
 
 @end
 

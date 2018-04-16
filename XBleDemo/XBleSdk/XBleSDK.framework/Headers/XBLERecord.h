@@ -13,8 +13,8 @@
 /// 操作类型
 @property (nonatomic, assign) int type;
 /// 编号
-@property (nonatomic, assign) int number;
+@property (nonatomic, assign) uint number;
 /// 操作时间
-@property (nonatomic, assign) int time;
+@property (nonatomic, assign) uint time;
 
 @end

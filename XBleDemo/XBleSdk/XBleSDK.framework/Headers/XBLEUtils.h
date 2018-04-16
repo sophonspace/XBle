@@ -67,6 +67,14 @@ typedef NS_ENUM(NSInteger, XBCmdResultCode) {
 
 
 /**
+ 获取系统蓝牙状态
+
+ @see XBLEState
+ @return 当前状态
+ */
+- (XBLEState)systemBleState;
+
+/**
  扫描蓝牙设备
 
  @param duration 扫描持续时间

@@ -23,7 +23,7 @@
 @property (nonatomic, assign) int status;
 /// 类型
 @property (nonatomic, assign) int type;
-/// 是否已被初始化（1:为初始化，>1：已被初始化）
+/// 是否已被初始化（1:未初始化，>1：已被初始化）
 @property (nonatomic, assign) int state;
 /// 电量
 @property (nonatomic, assign) int battary;
