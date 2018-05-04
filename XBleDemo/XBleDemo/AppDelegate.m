@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <XBleSDK/XBleSDK.h>
 
 @interface AppDelegate ()
 
@@ -17,6 +18,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [[XBLEUtils share] initWithAppKey:@"" appSecurety:@"" env:XBConfigEnvSandbox];
     return YES;
 }
 

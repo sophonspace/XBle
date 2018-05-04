@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "XBLEFirmware.h"
+#import "XBLEFunction.h"
 
 @interface XBLEDevice : NSObject
 
@@ -35,5 +36,7 @@
 @property (nonatomic, strong) NSNumber *RSSI;
 /// 固件(如果该属性不为nil则代表需要升级，否则无需升级)
 @property (nonatomic, strong) XBLEFirmware *firmware;
+/// 设备支持的功能
+@property (nonatomic, strong) XBLEFunction *function;
 
 @end

@@ -16,8 +16,10 @@ FOUNDATION_EXPORT const unsigned char XBleSDKVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <XBleSDK/PublicHeader.h>
 
+#import <XBleSDK/XBLEHeader.h>
 #import <XBleSDK/XBLEUtils.h>
 #import <XBleSDK/XBLELockUtils.h>
 #import <XBleSDK/XBLEDevice.h>
 #import <XBleSDK/XBLERecord.h>
 #import <XBleSDK/XBLEFirmware.h>
+#import <XBLESDK/XBLEFunction.h>

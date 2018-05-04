@@ -102,6 +102,25 @@
 
 
 /**
+ 设置设备蓝牙广播状态（开/关）
+
+ @param status 广播状态（0:广播常开，1:无操作20s后自动关闭，需手动激活）
+ @param result 执行结果回调
+ @param mac 设备Mac地址
+ */
++ (void)setBroadCastStatus:(int)status result:(void(^)(XBCmdResultCode code))result mac:(NSString *)mac;
+
+
+/**
+ 获取设备蓝牙广播状态（开/关）
+
+ @param result 执行结果回调
+ @param mac 设备Mac地址
+ */
++ (void)getBroadCastStatus:(void(^)(XBCmdResultCode code, int value))result mac:(NSString *)mac;
+
+
+/**
  设置永久密码
  
  @param password 密码（6~10位数字）
@@ -192,7 +211,7 @@
 
  @param mac 设备Mac地址
  */
-+ (void)upgrade:(NSString *)mac result:(void(^)(BOOL success, NSInteger progress))result;
++ (void)upgrade:(NSString *)mac result:(void(^)(BOOL failed, BOOL compelete, NSInteger progress))result;
 
 
 

@@ -1,167 +1,119 @@
-== SQLCipher ==
 
-SQLCipher is an SQLite extension that provides transparent 256-bit AES encryption of 
-database files. Pages are encrypted before being written to disk and are decrypted 
-when read back. Due to the small footprint and great performance it’s ideal for 
-protecting embedded application databases and is well suited for mobile development.
+ OpenSSL 1.0.2j 26 Sep 2016
 
-The official SQLCipher software site is http://sqlcipher.net
+ Copyright (c) 1998-2015 The OpenSSL Project
+ Copyright (c) 1995-1998 Eric A. Young, Tim J. Hudson
+ All rights reserved.
 
-SQLCipher was initially developed by Stephen Lombardo at Zetetic LLC 
-(sjlombardo@zetetic.net) as the encrypted database layer for Strip, 
-an iPhone data vault and password manager (http://getstrip.com).   
+ DESCRIPTION
+ -----------
 
-[Features]
+ The OpenSSL Project is a collaborative effort to develop a robust,
+ commercial-grade, fully featured, and Open Source toolkit implementing the
+ Secure Sockets Layer (SSLv3) and Transport Layer Security (TLS) protocols as
+ well as a full-strength general purpose cryptograpic library. The project is
+ managed by a worldwide community of volunteers that use the Internet to
+ communicate, plan, and develop the OpenSSL toolkit and its related
+ documentation.
 
-- Fast performance with as little as 5-15% overhead for encryption on many operations
-- 100% of data in the database file is encrypted
-- Good security practices (CBC mode, key derivation)
-- Zero-configuration and application level cryptography
-- Algorithms provided by the peer reviewed OpenSSL crypto library.
-- Configurable crypto providers
+ OpenSSL is descended from the SSLeay library developed by Eric A. Young
+ and Tim J. Hudson.  The OpenSSL toolkit is licensed under a dual-license (the
+ OpenSSL license plus the SSLeay license), which means that you are free to
+ get and use it for commercial and non-commercial purposes as long as you
+ fulfill the conditions of both licenses.
 
-[Compiling]
+ OVERVIEW
+ --------
 
-Building SQLCipher is almost the same as compiling a regular version of 
-SQLite with two small exceptions: 
+ The OpenSSL toolkit includes:
 
- 1. You must define SQLITE_HAS_CODEC and SQLITE_TEMP_STORE=2 when building sqlcipher
- 2. You need to link against a OpenSSL's libcrypto 
- 
-Example Static linking (replace /opt/local/lib with the path to libcrypto.a)
+ libssl.a:
+     Provides the client and server-side implementations for SSLv3 and TLS.
 
-  $ ./configure --enable-tempstore=yes CFLAGS="-DSQLITE_HAS_CODEC" \
-    LDFLAGS="/opt/local/lib/libcrypto.a"
-  $ make
+ libcrypto.a:
+     Provides general cryptographic and X.509 support needed by SSL/TLS but
+     not logically part of it.
 
-Example Dynamic linking
+ openssl:
+     A command line tool that can be used for:
+        Creation of key parameters
+        Creation of X.509 certificates, CSRs and CRLs
+        Calculation of message digests
+        Encryption and decryption
+        SSL/TLS client and server tests
+        Handling of S/MIME signed or encrypted mail
+        And more...
 
-  $ ./configure --enable-tempstore=yes CFLAGS="-DSQLITE_HAS_CODEC" \
-    LDFLAGS="-lcrypto"
-  $ make
+ INSTALLATION
+ ------------
 
-[Encrypting a database]
+ See the appropriate file:
+        INSTALL         Linux, Unix, etc.
+        INSTALL.DJGPP   DOS platform with DJGPP
+        INSTALL.NW      Netware
+        INSTALL.OS2     OS/2
+        INSTALL.VMS     VMS
+        INSTALL.W32     Windows (32bit)
+        INSTALL.W64     Windows (64bit)
+        INSTALL.WCE     Windows CE
 
-To specify an encryption passphrase for the database via the SQL interface you 
-use a pragma. The passphrase you enter is passed through PBKDF2 key derivation to
-obtain the encryption key for the database 
+ SUPPORT
+ -------
 
-  PRAGMA key = 'passphrase';
+ See the OpenSSL website www.openssl.org for details on how to obtain
+ commercial technical support.
 
-Alternately, you can specify an exact byte sequence using a blob literal. If you
-use this method it is your responsibility to ensure that the data you provide a
-64 character hex string, which will be converted directly to 32 bytes (256 bits) of 
-key data without key derivation.
+ If you have any problems with OpenSSL then please take the following steps
+ first:
 
-  PRAGMA key = "x'2DD29CA851E7B56E4697B0E1F08507293D761A05CE4D1B628663F411A8086D99'";
+    - Download the current snapshot from ftp://ftp.openssl.org/snapshot/
+      to see if the problem has already been addressed
+    - Remove ASM versions of libraries
+    - Remove compiler optimisation flags
 
-To encrypt a database programatically you can use the sqlite3_key function. 
-The data provided in pKey is converted to an encryption key according to the 
-same rules as PRAGMA key. 
+ If you wish to report a bug then please include the following information in
+ any bug report:
 
+    - On Unix systems:
+        Self-test report generated by 'make report'
+    - On other systems:
+        OpenSSL version: output of 'openssl version -a'
+        OS Name, Version, Hardware platform
+        Compiler Details (name, version)
+    - Application Details (name, version)
+    - Problem Description (steps that will reproduce the problem, if known)
+    - Stack Traceback (if the application dumps core)
 
-  int sqlite3_key(sqlite3 *db, const void *pKey, int nKey);
+ Email the report to:
 
-PRAGMA key or sqlite3_key should be called as the first operation when a database is open.
+    rt@openssl.org
 
-[Changing a database key]
+ In order to avoid spam, this is a moderated mailing list, and it might
+ take a day for the ticket to show up.  (We also scan posts to make sure
+ that security disclosures aren't publically posted by mistake.) Mail
+ to this address is recorded in the public RT (request tracker) database
+ (see https://www.openssl.org/community/index.html#bugs for details) and
+ also forwarded the public openssl-dev mailing list.  Confidential mail
+ may be sent to openssl-security@openssl.org (PGP key available from the
+ key servers).
 
-To change the encryption passphrase for an existing database you may use the rekey pragma
-after you've supplied the correct database password;
+ Please do NOT use this for general assistance or support queries.
+ Just because something doesn't work the way you expect does not mean it
+ is necessarily a bug in OpenSSL.
 
-  PRAGMA key = 'passphrase'; -- start with the existing database passphrase
-  PRAGMA rekey = 'new-passphrase'; -- rekey will reencrypt with the new passphrase
+ You can also make GitHub pull requests. If you do this, please also send
+ mail to rt@openssl.org with a link to the PR so that we can more easily
+ keep track of it.
 
-The hexrekey pragma may be used to rekey to a specific binary value
+ HOW TO CONTRIBUTE TO OpenSSL
+ ----------------------------
 
-  PRAGMA rekey = "x'2DD29CA851E7B56E4697B0E1F08507293D761A05CE4D1B628663F411A8086D99'";
+ See CONTRIBUTING
 
-This can be accomplished programtically by using sqlite3_rekey;
-  
-  sqlite3_rekey(sqlite3 *db, const void *pKey, int nKey)
+ LEGALITIES
+ ----------
 
-[Support]
-
-The primary avenue for support and discussions is the SQLCipher users mailing list:
-
-http://groups.google.com/group/sqlcipher
-
-Issues or support questions on using SQLCipher should be entered into the 
-GitHub Issue tracker:
-
-http://github.com/sjlombardo/sqlcipher/issues
-
-Please DO NOT post issues, support questions, or other problems to blog 
-posts about SQLCipher as we do not monitor them frequently.
-
-If you are using SQLCipher in your own software please let us know at 
-support@zetetic.net!
-
-[License]
-
-Copyright (c) 2008, ZETETIC LLC
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the ZETETIC LLC nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY ZETETIC LLC ''AS IS'' AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL ZETETIC LLC BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-== End SQLCipher ==
-
-This directory contains source code to 
-
-    SQLite: An Embeddable SQL Database Engine
-
-To compile the project, first create a directory in which to place
-the build products.  It is recommended, but not required, that the
-build directory be separate from the source directory.  Cd into the
-build directory and then from the build directory run the configure
-script found at the root of the source tree.  Then run "make".
-
-For example:
-
-    tar xzf sqlite.tar.gz    ;#  Unpack the source tree into "sqlite"
-    mkdir bld                ;#  Build will occur in a sibling directory
-    cd bld                   ;#  Change to the build directory
-    ../sqlite/configure      ;#  Run the configure script
-    make                     ;#  Run the makefile.
-    make install             ;#  (Optional) Install the build products
-
-The configure script uses autoconf 2.61 and libtool.  If the configure
-script does not work out for you, there is a generic makefile named
-"Makefile.linux-gcc" in the top directory of the source tree that you
-can copy and edit to suit your needs.  Comments on the generic makefile
-show what changes are needed.
-
-The linux binaries on the website are created using the generic makefile,
-not the configure script.  The windows binaries on the website are created
-using MinGW32 configured as a cross-compiler running under Linux.  For 
-details, see the ./publish.sh script at the top-level of the source tree.
-The developers do not use teh configure script.
-
-SQLite does not require TCL to run, but a TCL installation is required
-by the makefiles.  SQLite contains a lot of generated code and TCL is
-used to do much of that code generation.  The makefile also requires
-AWK.
-
-Contacts:
-
-   http://www.sqlite.org/
+ A number of nations, in particular the U.S., restrict the use or export
+ of cryptography. If you are potentially subject to such restrictions
+ you should seek competent professional legal advice before attempting to
+ develop or distribute cryptographic code.
